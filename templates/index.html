@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AetherCast | AI Weather Prediction Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="theme-default">
+    <!-- Ambient Animated Background Lights -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <div class="app-container">
+        <!-- Top Navigation / Header -->
+        <header class="app-header">
+            <div class="header-brand">
+                <div class="brand-logo">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="brand-title">AetherCast AI</h1>
+                    <p class="brand-subtitle">Intelligent Meteorological Classification</p>
+                </div>
+            </div>
+            <div class="header-status">
+                <span class="status-indicator"></span>
+                <span class="status-text">Random Forest Model (92.4% Accuracy)</span>
+            </div>
+        </header>
+
+        <!-- Quick Scenario Presets -->
+        <section class="presets-section">
+            <span class="presets-label">Quick Test Scenarios:</span>
+            <div class="presets-buttons">
+                <button type="button" class="preset-btn" id="preset-sunny" data-preset="sunny">
+                    <span class="preset-icon">☀️</span> Sunny Beach
+                </button>
+                <button type="button" class="preset-btn" id="preset-rainy" data-preset="rainy">
+                    <span class="preset-icon">🌧️</span> Monsoon Storm
+                </button>
+                <button type="button" class="preset-btn" id="preset-snowy" data-preset="snowy">
+                    <span class="preset-icon">❄️</span> Alpine Blizzard
+                </button>
+                <button type="button" class="preset-btn" id="preset-cloudy" data-preset="cloudy">
+                    <span class="preset-icon">☁️</span> Overcast Autumn
+                </button>
+            </div>
+        </section>
+
+        <!-- Main Dashboard Grid -->
+        <main class="dashboard-grid">
+            <!-- Form Section -->
+            <section class="glass-card form-card">
+                <div class="card-header">
+                    <h2 class="card-title">Atmospheric Parameters</h2>
+                    <p class="card-subtitle">Adjust sliders or choose categorical options to predict the weather condition.</p>
+                </div>
+
+                <form id="weather-form">
+                    <div class="form-grid">
+                        <!-- Temperature -->
+                        <div class="control-group">
+                            <div class="control-label-wrapper">
+                                <label for="temperature" class="control-label">Temperature</label>
+                                <span class="range-hint">-25 to 50 °C</span>
+                            </div>
+                            <div class="input-with-unit">
+                                <input type="number" id="temperature" name="temperature" min="-25" max="50" step="0.1" value="28.0" class="number-input" placeholder="e.g. 28.0" required>
+                                <span class="unit-badge">°C</span>
+                            </div>
+                        </div>
+
+                        <!-- Humidity -->
+                        <div class="control-group">
+                            <div class="control-label-wrapper">
+                                <label for="humidity" class="control-label">Humidity</label>
+                                <span class="range-hint">10 to 100 %</span>
+                            </div>
+                            <div class="input-with-unit">
+                                <input type="number" id="humidity" name="humidity" min="10" max="100" step="1" value="65" class="number-input" placeholder="e.g. 65" required>
+                                <span class="unit-badge">%</span>
+                            </div>
+                        </div>
+
+                        <!-- Wind Speed -->
+                        <div class="control-group">
+                            <div class="control-label-wrapper">
+                                <label for="wind_speed" class="control-label">Wind Speed</label>
+                                <span class="range-hint">0 to 50 km/h</span>
+                            </div>
+                            <div class="input-with-unit">
+                                <input type="number" id="wind_speed" name="wind_speed" min="0" max="50" step="0.1" value="8.5" class="number-input" placeholder="e.g. 8.5" required>
+                                <span class="unit-badge">km/h</span>
+                            </div>
+                        </div>
+
+                        <!-- Precipitation (%) -->
+                        <div class="control-group">
+                            <div class="control-label-wrapper">
+                                <label for="precipitation" class="control-label">Precipitation Chance</label>
+                                <span class="range-hint">0 to 100 %</span>
+                            </div>
+                            <div class="input-with-unit">
+                                <input type="number" id="precipitation" name="precipitation" min="0" max="100" step="0.5" value="15.0" class="number-input" placeholder="e.g. 15.0" required>
+                                <span class="unit-badge">%</span>
+                            </div>
+                        </div>
+
+                        <!-- Atmospheric Pressure -->
+                        <div class="control-group">
+                            <div class="control-label-wrapper">
+                                <label for="pressure" class="control-label">Atmospheric Pressure</label>
+                                <span class="range-hint">950 to 1060 hPa</span>
+                            </div>
+                            <div class="input-with-unit">
+                                <input type="number" id="pressure" name="pressure" min="950" max="1060" step="0.1" value="1014.0" class="number-input" placeholder="e.g. 1014.0" required>
+                                <span class="unit-badge">hPa</span>
+                            </div>
+                        </div>
+
+                        <!-- UV Index -->
+                        <div class="control-group">
+                            <div class="control-label-wrapper">
+                                <label for="uv_index" class="control-label">UV Index</label>
+                                <span class="range-hint">0 (Low) to 14 (Extreme)</span>
+                            </div>
+                            <div class="input-with-unit">
+                                <input type="number" id="uv_index" name="uv_index" min="0" max="14" step="1" value="6" class="number-input" placeholder="e.g. 6" required>
+                                <span class="unit-badge">UV</span>
+                            </div>
+                        </div>
+
+                        <!-- Visibility -->
+                        <div class="control-group">
+                            <div class="control-label-wrapper">
+                                <label for="visibility" class="control-label">Visibility</label>
+                                <span class="range-hint">0.1 to 25 km</span>
+                            </div>
+                            <div class="input-with-unit">
+                                <input type="number" id="visibility" name="visibility" min="0.1" max="25" step="0.1" value="10.0" class="number-input" placeholder="e.g. 10.0" required>
+                                <span class="unit-badge">km</span>
+                            </div>
+                        </div>
+
+                        <!-- Cloud Cover -->
+                        <div class="control-group">
+                            <label for="cloud_cover" class="control-label">Cloud Cover</label>
+                            <select id="cloud_cover" name="cloud_cover" class="select-input">
+                                <option value="clear">Clear Skies</option>
+                                <option value="partly cloudy" selected>Partly Cloudy</option>
+                                <option value="cloudy">Cloudy</option>
+                                <option value="overcast">Overcast</option>
+                            </select>
+                        </div>
+
+                        <!-- Season -->
+                        <div class="control-group">
+                            <label for="season" class="control-label">Season</label>
+                            <select id="season" name="season" class="select-input">
+                                <option value="Spring">Spring</option>
+                                <option value="Summer" selected>Summer</option>
+                                <option value="Autumn">Autumn</option>
+                                <option value="Winter">Winter</option>
+                            </select>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="control-group">
+                            <label for="location" class="control-label">Geographic Location</label>
+                            <select id="location" name="location" class="select-input">
+                                <option value="coastal" selected>Coastal</option>
+                                <option value="inland">Inland</option>
+                                <option value="mountain">Mountain</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="submit-btn" class="btn-predict">
+                            <span class="btn-icon">⚡</span>
+                            <span class="btn-text">Predict Weather Condition</span>
+                            <span class="btn-spinner" style="display: none;"></span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Result Section -->
+            <section class="glass-card result-card" id="result-card">
+                <!-- Initial Placeholder View -->
+                <div class="result-placeholder" id="result-placeholder">
+                    <div class="placeholder-icon-glow">
+                        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                            <circle cx="12" cy="12" r="4"/>
+                        </svg>
+                    </div>
+                    <h3 class="placeholder-title">Awaiting Meteorological Input</h3>
+                    <p class="placeholder-desc">Customize values on the left or select a quick preset scenario to view the AI prediction analysis.</p>
+                </div>
+
+                <!-- Prediction Content (Hidden initially) -->
+                <div class="result-content" id="result-content" style="display: none;">
+                    <div class="result-header">
+                        <span class="badge-tag" id="prediction-badge">Sunny</span>
+                        <div class="confidence-chip">
+                            <span class="confidence-label">Confidence:</span>
+                            <span class="confidence-value" id="prediction-confidence">96.4%</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Weather Visual Banner -->
+                    <div class="weather-visual-banner" id="visual-banner">
+                        <div class="weather-animated-icon" id="weather-icon-container">
+                            <!-- Injected dynamically via JS -->
+                        </div>
+                        <div class="weather-hero-info">
+                            <h2 class="weather-headline" id="prediction-headline">Sunny</h2>
+                            <p class="weather-tagline" id="prediction-tagline">Clear skies with abundant sunshine.</p>
+                        </div>
+                    </div>
+
+                    <!-- Advisory Card -->
+                    <div class="advice-card">
+                        <div class="advice-icon">💡</div>
+                        <div class="advice-text">
+                            <div class="advice-title">Meteorological Advisory</div>
+                            <div class="advice-body" id="prediction-advice">Ideal day for outdoor activities. Apply sunscreen and stay hydrated.</div>
+                        </div>
+                    </div>
+
+                    <!-- Probability Bars -->
+                    <div class="prob-section">
+                        <h4 class="prob-title">Class Probability Distribution</h4>
+                        <div class="prob-bars-grid" id="prob-bars-container">
+                            <!-- Dynamically injected -->
+                        </div>
+                    </div>
+
+                    <!-- Parameter Snapshot -->
+                    <div class="snapshot-section">
+                        <h4 class="snapshot-title">Input Snapshot</h4>
+                        <div class="snapshot-grid" id="snapshot-container">
+                            <!-- Dynamically injected -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>Developed with Python Flask, Scikit-Learn (Random Forest Classifier), and Vanilla Web UI.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
