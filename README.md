@@ -1,4 +1,4 @@
-# 🌦️ AetherCast AI - Intelligent Weather Classification & Prediction System
+# 🌦️ WaetherCast AI - Intelligent Weather Classification & Prediction System
 
 A full-stack Machine Learning web application that predicts meteorological weather conditions (**Sunny**, **Rainy**, **Cloudy**, **Snowy**) based on environmental and atmospheric parameters. Built with **Scikit-Learn (Random Forest)**, **Flask**, and a modern **Glassmorphism Web Dashboard**.
 
@@ -93,6 +93,3 @@ Open your browser and navigate to: **`http://127.0.0.1:5000`**
 | Gaussian Naive Bayes | 78.6% | 0.79 |
 
 ---
-
-## 📜 License
-This project is licensed under the MIT License.

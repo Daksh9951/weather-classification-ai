@@ -1,5 +1,5 @@
 /**
- * AetherCast AI - Frontend Application Logic
+ * WaetherCast AI - Frontend Application Logic
  */
 
 document.addEventListener('DOMContentLoaded', () => {
