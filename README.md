@@ -53,8 +53,8 @@ Wether_pred/
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/weather-prediction.git
-cd weather-prediction
+git clone https://github.com/Daksh9951/weather-classification-ai.git
+cd weather-classification-ai
 ```
 
 ### 2. Create and Activate Virtual Environment (Recommended)
